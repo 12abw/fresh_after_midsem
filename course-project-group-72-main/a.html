@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Audio Files</title>
+</head>
+<body>
+    <h1>Upload Audio Files</h1>
+    <input type="file" id="audioFileInput" accept=".mp3, .wav" multiple>
+    <button onclick="uploadAudio()">Upload</button>
+    
+    <script>
+        function uploadAudio() {
+            const fileInput = document.getElementById('audioFileInput');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                alert('Please select one or more audio files.');
+                return;
+            }
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('audioFiles', files[i]);
+            }
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
